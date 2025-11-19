@@ -1,5 +1,7 @@
 use phf::phf_map;
 
+use crate::error::BraillifyError;
+
 #[derive(Debug, PartialEq)]
 pub enum KoreanChar {
     Choseong(char),
@@ -51,13 +53,13 @@ pub static KOREAN_JAUEM_MAP: phf::Map<char, (char, Option<char>)> = phf_map! {
 };
 
 /// 자음을 분리합니다.
-pub fn split_korean_jauem(text: char) -> Result<(char, Option<char>), String> {
+pub fn split_korean_jauem(text: char) -> Result<(char, Option<char>), BraillifyError> {
     if let Some((cho, jong)) = KOREAN_JAUEM_MAP.get(&text) {
         return Ok((*cho, *jong));
     }
-    Err("Invalid Korean character".to_string())
+    Err(BraillifyError::InvalidKoreanCharacter { character: text, position: None })
 }
-pub fn split_korean_char(text: char) -> Result<Vec<KoreanChar>, String> {
+pub fn split_korean_char(text: char) -> Result<Vec<KoreanChar>, BraillifyError> {
     // check korean char
     let code = text as u32;
     if (0x3131..=0x314E).contains(&code) {
@@ -67,7 +69,7 @@ pub fn split_korean_char(text: char) -> Result<Vec<KoreanChar>, String> {
         return Ok(vec![KoreanChar::Jungseong(text)]);
     }
     if !(0xAC00..=0xD7A3).contains(&code) {
-        return Err("Invalid Korean character".to_string());
+        return Err(BraillifyError::InvalidKoreanCharacter { character: text, position: None });
     }
 
     const CHOSEONG: [char; 19] = [

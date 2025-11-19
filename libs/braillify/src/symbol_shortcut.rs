@@ -1,6 +1,6 @@
 use phf::phf_map;
 
-use crate::unicode::decode_unicode;
+use crate::{error::BraillifyError, unicode::decode_unicode};
 
 static SHORTCUT_MAP: phf::Map<char, &'static [u8]> = phf_map! {
     '"' => &[decode_unicode('⠦')],
@@ -54,11 +54,11 @@ static ENGLISH_SYMBOL_MAP: phf::Map<char, &'static [u8]> = phf_map! {
     ',' => &[decode_unicode('⠂')],
 };
 
-pub fn encode_char_symbol_shortcut(text: char) -> Result<&'static [u8], String> {
+pub fn encode_char_symbol_shortcut(text: char) -> Result<&'static [u8], BraillifyError> {
     if let Some(code) = SHORTCUT_MAP.get(&text) {
         Ok(code)
     } else {
-        Err("Invalid symbol character".to_string())
+        Err(BraillifyError::InvalidSymbolCharacter { character: text, position: None })
     }
 }
 

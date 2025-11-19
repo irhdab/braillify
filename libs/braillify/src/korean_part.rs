@@ -1,6 +1,6 @@
 use phf::phf_map;
 
-use crate::{moeum::jungsong::JUNGSEONG_MAP, unicode::decode_unicode};
+use crate::{error::BraillifyError, moeum::jungsong::JUNGSEONG_MAP, unicode::decode_unicode};
 
 pub static KOREAN_PART_MAP: phf::Map<char, &'static [u8]> = phf_map! {
     'ㄱ' => &[decode_unicode('⠁')],
@@ -36,12 +36,12 @@ pub static KOREAN_PART_MAP: phf::Map<char, &'static [u8]> = phf_map! {
 };
 
 /// 제8항 자음자나 모음자가 단독으로 쓰일 때에는 해당 글자 앞에 온표 =을 적어 나타내며, 자음자는 받침으로 적는다
-pub fn encode_korean_part(text: char) -> Result<&'static [u8], String> {
+pub fn encode_korean_part(text: char) -> Result<&'static [u8], BraillifyError> {
     if let Some(code) = KOREAN_PART_MAP.get(&text) {
         return Ok(code);
     }
     if let Some(code) = JUNGSEONG_MAP.get(&text) {
         return Ok(code);
     }
-    Err("Invalid Korean part character".to_string())
+    Err(BraillifyError::InvalidKoreanPart { character: text, position: None })
 }

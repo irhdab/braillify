@@ -1,6 +1,6 @@
 use phf::phf_map;
 
-use crate::unicode::decode_unicode;
+use crate::{error::BraillifyError, unicode::decode_unicode};
 // 1 2 3 4 5 6 7 8 9 0
 // #a #b #c #d #e #f #g #h
 
@@ -17,9 +17,9 @@ pub static NUMBER_MAP: phf::Map<char, u8> = phf_map! {
     '0' => decode_unicode('⠚'),
 };
 
-pub fn encode_number(text: char) -> Result<u8, String> {
+pub fn encode_number(text: char) -> Result<u8, BraillifyError> {
     if let Some(code) = NUMBER_MAP.get(&text) {
         return Ok(*code);
     }
-    Err("Invalid number character".to_string())
+    Err(BraillifyError::InvalidNumberCharacter { character: text, position: None })
 }

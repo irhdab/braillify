@@ -1,6 +1,6 @@
 use phf::phf_map;
 
-use crate::unicode::decode_unicode;
+use crate::{error::BraillifyError, unicode::decode_unicode};
 
 pub static ENGLISH_MAP: phf::Map<char, u8> = phf_map! {
     'a' => decode_unicode('⠁'),
@@ -31,9 +31,9 @@ pub static ENGLISH_MAP: phf::Map<char, u8> = phf_map! {
     'z' => decode_unicode('⠵'),
 };
 /// 제28항 로마자는 ｢통일영어점자 규정｣에 따라 다음과 같이 적는다.
-pub fn encode_english(text: char) -> Result<u8, String> {
+pub fn encode_english(text: char) -> Result<u8, BraillifyError> {
     if let Some(code) = ENGLISH_MAP.get(&text.to_ascii_lowercase()) {
         return Ok(*code);
     }
-    Err("Invalid English character".to_string())
+    Err(BraillifyError::InvalidEnglishCharacter { character: text, position: None })
 }

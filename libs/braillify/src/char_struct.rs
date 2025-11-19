@@ -1,4 +1,4 @@
-use crate::{math_symbol_shortcut::is_math_symbol_char, symbol_shortcut::is_symbol_char, fraction::is_unicode_fraction};
+use crate::{error::BraillifyError, math_symbol_shortcut::is_math_symbol_char, symbol_shortcut::is_symbol_char, fraction::is_unicode_fraction};
 
 /// Character in Korean
 #[derive(Debug)]
@@ -12,10 +12,10 @@ pub struct KoreanChar {
 }
 
 impl KoreanChar {
-    pub fn new(c: char) -> Result<Self, String> {
+    pub fn new(c: char) -> Result<Self, BraillifyError> {
         let code = c as u32;
         if !(0xAC00..=0xD7A3).contains(&code) {
-            return Err("Invalid Korean character".to_string());
+            return Err(BraillifyError::InvalidKoreanCharacter { character: c, position: None });
         }
 
         const CHOSEONG: [char; 19] = [
@@ -63,7 +63,7 @@ pub enum CharType {
 }
 
 impl CharType {
-    pub fn new(c: char) -> Result<Self, String> {
+    pub fn new(c: char) -> Result<Self, BraillifyError> {
         if c.is_ascii_alphabetic() {
             return Ok(Self::English(c));
         }
@@ -92,7 +92,7 @@ impl CharType {
         if c.is_whitespace() {
             return Ok(Self::Space(c));
         }
-        Err("Invalid character".to_string())
+        Err(BraillifyError::InvalidCharacter { character: c, position: None, context: "Unknown character type".to_string() })
     }
 }
 

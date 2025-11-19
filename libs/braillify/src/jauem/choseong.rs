@@ -1,4 +1,4 @@
-use crate::unicode::decode_unicode;
+use crate::{error::BraillifyError, unicode::decode_unicode};
 // choseong map
 use phf::phf_map;
 
@@ -19,11 +19,11 @@ pub static CHOSEONG_MAP: phf::Map<char, u8> = phf_map! {
     'ㅎ' => decode_unicode('⠚'),
 };
 
-pub fn encode_choseong(text: char) -> Result<u8, String> {
+pub fn encode_choseong(text: char) -> Result<u8, BraillifyError> {
     if let Some(code) = CHOSEONG_MAP.get(&text) {
         Ok(*code)
     } else {
-        Err("Invalid Korean choseong character".to_string())
+        Err(BraillifyError::InvalidKoreanChoseong { character: text, position: None })
     }
 }
 

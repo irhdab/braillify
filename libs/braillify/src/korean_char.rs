@@ -1,13 +1,14 @@
 use crate::{
     char_shortcut,
     char_struct::KoreanChar,
+    error::BraillifyError,
     jauem::{choseong::encode_choseong, jongseong::encode_jongseong},
     moeum::jungsong::encode_jungsong,
     split::split_korean_jauem,
     utils::build_char,
 };
 
-pub fn encode_korean_char(korean: &KoreanChar) -> Result<Vec<u8>, String> {
+pub fn encode_korean_char(korean: &KoreanChar) -> Result<Vec<u8>, BraillifyError> {
     let mut result = Vec::new();
     let (cho0, cho1) = split_korean_jauem(korean.cho)?;
     if cho1.is_some() {

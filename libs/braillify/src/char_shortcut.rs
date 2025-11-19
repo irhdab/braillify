@@ -1,6 +1,6 @@
 use phf::phf_map;
 
-use crate::unicode::decode_unicode;
+use crate::{error::BraillifyError, unicode::decode_unicode};
 
 pub static SHORTCUT_MAP: phf::Map<char, &'static [u8]> = phf_map! {
     '가' => &[decode_unicode('⠫')],
@@ -34,11 +34,11 @@ pub static SHORTCUT_MAP: phf::Map<char, &'static [u8]> = phf_map! {
     '청' => &[decode_unicode('⠰'), decode_unicode('⠻')],
 };
 
-pub fn encode_char_shortcut(text: char) -> Result<&'static [u8], String> {
+pub fn encode_char_shortcut(text: char) -> Result<&'static [u8], BraillifyError> {
     if let Some(code) = SHORTCUT_MAP.get(&text) {
         Ok(code)
     } else {
-        Err("Invalid Korean char shortcut".to_string())
+        Err(BraillifyError::InvalidShortcutCharacter { character: text, position: None })
     }
 }
 

@@ -1,4 +1,4 @@
-use crate::unicode::decode_unicode;
+use crate::{error::BraillifyError, unicode::decode_unicode};
 use phf::phf_map;
 
 pub static JONGSEONG_MAP: phf::Map<char, &'static [u8]> = phf_map! {
@@ -34,11 +34,11 @@ pub static JONGSEONG_MAP: phf::Map<char, &'static [u8]> = phf_map! {
     'ㅎ' => &[decode_unicode('⠴')],
 };
 
-pub fn encode_jongseong(text: char) -> Result<&'static [u8], String> {
+pub fn encode_jongseong(text: char) -> Result<&'static [u8], BraillifyError> {
     if let Some(code) = JONGSEONG_MAP.get(&text) {
         return Ok(code);
     }
-    Err("Invalid Korean jongseong character".to_string())
+    Err(BraillifyError::InvalidKoreanJongseong { character: text, position: None })
 }
 
 // pub fn decode_jongseong(code: u8) -> char {

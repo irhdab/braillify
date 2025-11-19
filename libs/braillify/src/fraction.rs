@@ -1,5 +1,7 @@
 use unicode_normalization::UnicodeNormalization;
 
+use crate::error::BraillifyError;
+
 const FRACTION_SLASH: char = '\u{2044}';
 
 fn consume_whitespace(iter: &mut std::iter::Peekable<std::str::Chars>) {
@@ -12,13 +14,17 @@ fn consume_whitespace(iter: &mut std::iter::Peekable<std::str::Chars>) {
     }
 }
 
-fn encode_number_string(s: &str, part_name: &str) -> Result<Vec<u8>, String> {
+fn encode_number_string(s: &str, part_name: &str) -> Result<Vec<u8>, BraillifyError> {
     let mut result = Vec::new();
-    for c in s.chars() {
+    for (i, c) in s.chars().enumerate() {
         if !c.is_ascii_digit() {
-            return Err(format!("Invalid {} part (non-ascii digit): {}", part_name, c));
+            return Err(BraillifyError::InvalidFractionPart {
+                part_name: part_name.to_string(),
+                character: c,
+                position: Some(i)
+            });
         }
-        result.extend(crate::number::encode_number(c));
+        result.extend(crate::number::encode_number(c)?);
     }
     Ok(result)
 }

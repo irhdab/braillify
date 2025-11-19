@@ -1,7 +1,7 @@
-use crate::char_struct::{CharType, KoreanChar};
+use crate::{char_struct::{CharType, KoreanChar}, error::BraillifyError};
 
 /// 5절 11항 - 모음자에 ‘예’가 붙어 나올 때에는 그 사이에 구분표 ⠤을 적어 나타낸다.
-pub fn rule_11(current: &KoreanChar, next: char, result: &mut Vec<u8>) -> Result<(), String> {
+pub fn rule_11(current: &KoreanChar, next: char, result: &mut Vec<u8>) -> Result<(), BraillifyError> {
     if let CharType::Korean(korean) = CharType::new(next)?
         && current.jong.is_none() && korean.cho == 'ㅇ' && korean.jung == 'ㅖ' {
             result.push(36);
@@ -9,8 +9,8 @@ pub fn rule_11(current: &KoreanChar, next: char, result: &mut Vec<u8>) -> Result
     Ok(())
 }
 
-/// 5절 12항 - ‘ㅑ, ㅘ, ㅜ, ㅝ’에 ‘애’가 붙어 나올 때에는 두 모음자 사이에 구분표 ⠤을 적어 나타낸다.
-pub fn rule_12(current: &KoreanChar, next: char, result: &mut Vec<u8>) -> Result<(), String> {
+/// 5절 12항 - ‘ㅑ, ㅘ, ㅜ, ㅝ’에 ‘애’가 붽어 나올 때에는 두 모음자 사이에 구분표 ⠤을 적어 나타낸다.
+pub fn rule_12(current: &KoreanChar, next: char, result: &mut Vec<u8>) -> Result<(), BraillifyError> {
     if let CharType::Korean(korean) = CharType::new(next)?
         && current.jong.is_none()
             && ['ㅑ', 'ㅘ', 'ㅜ', 'ㅝ'].contains(&current.jung)

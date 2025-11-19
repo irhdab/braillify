@@ -6,6 +6,7 @@ use regex::Regex;
 
 use crate::{
     char_struct::CharType,
+    error::BraillifyError,
     jauem::jongseong::encode_jongseong,
     korean_char::encode_korean_char,
     rule::{rule_11, rule_12},
@@ -20,6 +21,7 @@ static FRACTION_REGEX: Lazy<Regex> = Lazy::new(|| {
 
 mod char_shortcut;
 mod char_struct;
+mod error;
 #[cfg(feature = "cli")]
 pub mod cli;
 mod english;
@@ -75,7 +77,7 @@ impl Encoder {
         self.needs_english_continuation = false;
     }
 
-    pub fn encode(&mut self, text: &str, result: &mut Vec<u8>) -> Result<(), String> {
+    pub fn encode(&mut self, text: &str, result: &mut Vec<u8>) -> Result<(), BraillifyError> {
         let words = text
             .split(' ')
             .filter(|word| !word.is_empty())
@@ -101,7 +103,7 @@ impl Encoder {
         remaining_words: &[&str],
         skip_count: &mut usize,
         result: &mut Vec<u8>,
-    ) -> Result<(), String> {
+    ) -> Result<(), BraillifyError> {
         if word.starts_with('$') && word.ends_with('$') {
             if let Some((whole, num, den)) = fraction::parse_latex_fraction(word) {
                 if let Some(w) = whole {
@@ -620,7 +622,7 @@ impl Encoder {
         Ok(())
     }
 
-    pub fn finish(&mut self, result: &mut Vec<u8>) -> Result<(), String> {
+    pub fn finish(&mut self, result: &mut Vec<u8>) -> Result<(), BraillifyError> {
         // Handle any end-of-stream processing
         if self.triple_big_english {
             // Close triple big english if still active
@@ -631,21 +633,37 @@ impl Encoder {
     }
 }
 
-pub fn encode(text: &str) -> Result<Vec<u8>, String> {
-    // 한국어가 존재할 경우 english_indicator 가 true 가 됩니다.
-    let english_indicator = text
-        .split(' ')
-        .filter(|word| !word.is_empty())
-        .any(|word| word.chars().any(utils::is_korean_char));
+pub fn encode(text: &str) -> Result<Vec<u8>, BraillifyError> {
+    let config = EncodingConfig::default();
+    encode_with_config(text, config)
+}
 
-    let mut encoder = Encoder::new(english_indicator);
+pub fn encode_with_config(text: &str, config: EncodingConfig) -> Result<Vec<u8>, BraillifyError> {
+    // Apply the configuration's english_indicator setting based on the text content if needed
+    let mut final_config = config;
+    if final_config.english_indicator {
+        final_config.english_indicator = text
+            .split(' ')
+            .filter(|word| !word.is_empty())
+            .any(|word| word.chars().any(utils::is_korean_char));
+    }
+
+    // Check max input length if limit is set
+    if final_config.max_input_length > 0 && text.len() > final_config.max_input_length {
+        return Err(BraillifyError::InputTooLong {
+            length: text.len(),
+            max_length: final_config.max_input_length
+        });
+    }
+
+    let mut encoder = Encoder::new(final_config);
     let mut result = Vec::new();
     encoder.encode(text, &mut result)?;
     encoder.finish(&mut result)?;
     Ok(result)
 }
 
-pub fn encode_to_unicode(text: &str) -> Result<String, String> {
+pub fn encode_to_unicode(text: &str) -> Result<String, BraillifyError> {
     let result = encode(text)?;
     Ok(result
         .iter()
@@ -653,7 +671,7 @@ pub fn encode_to_unicode(text: &str) -> Result<String, String> {
         .collect::<String>())
 }
 
-pub fn encode_to_braille_font(text: &str) -> Result<String, String> {
+pub fn encode_to_braille_font(text: &str) -> Result<String, BraillifyError> {
     let result = encode(text)?;
     Ok(result
         .iter()
