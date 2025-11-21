@@ -44,6 +44,11 @@ jobs:
         uses: dtolnay/rust-toolchain@stable
         with:
           components: clippy, rustfmt
+      - uses: actions-rust-lang/setup-rust-toolchain@v1
+      - name: Cargo tarpaulin and fmt
+        run: |
+          cargo install cargo-tarpaulin
+          rustup component add rustfmt clippy
       - name: Install dependencies
         run: bun install
       - name: Build
@@ -63,6 +68,11 @@ jobs:
       - uses: oven-sh/setup-bun@v2
         with:
           bun-version: latest
+      - uses: actions-rust-lang/setup-rust-toolchain@v1
+      - name: Cargo tarpaulin and fmt
+        run: |
+          cargo install cargo-tarpaulin
+          rustup component add rustfmt clippy
       - run: |
           bun i
           bun run build
