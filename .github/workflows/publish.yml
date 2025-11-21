@@ -57,6 +57,13 @@ jobs:
         run: bun run lint
       - name: Test
         run: bun run test
+      - name: Upload to codecov.io
+        uses: codecov/codecov-action@v5
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          fail_ci_if_error: true
+        if: github.ref == 'refs/heads/main'
+
   deploy-landing:
     name: Deploy Landing
     runs-on: ubuntu-latest
@@ -94,11 +101,6 @@ jobs:
         with:
           path: ./apps/landing/out
       - uses: actions/deploy-pages@v4
-      - name: Upload to codecov.io
-        uses: codecov/codecov-action@v5
-        with:
-          token: ${{ secrets.CODECOV_TOKEN }}
-          fail_ci_if_error: true
 
   # publish
   changepacks:
