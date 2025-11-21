@@ -1,0 +1,6 @@
+{
+  "ignore": ["**", "!packages/python/pyproject.toml", "!packages/node/package.json", "!libs/braillify/Cargo.toml"],
+  "baseBranch": "main",
+  "latestPackage": null,
+  "publish": {}
+}
