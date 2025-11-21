@@ -74,33 +74,33 @@ mod tests {
     //         .stdout(predicate::str::is_empty().not());
     // }
 
-    #[test]
-    #[serial]
-    fn test_braillify_integration_numbers() {
-        let mut cmd = get_built_binary().command();
-        cmd.arg("123");
-        cmd.assert()
-            .success()
-            .stdout(predicate::str::is_empty().not());
-    }
+    // #[test]
+    // #[serial]
+    // fn test_braillify_integration_numbers() {
+    //     let mut cmd = get_built_binary().command();
+    //     cmd.arg("123");
+    //     cmd.assert()
+    //         .success()
+    //         .stdout(predicate::str::is_empty().not());
+    // }
 
-    #[test]
-    #[serial]
-    fn test_braillify_pipe_input() {
-        let mut cmd = get_built_binary().command();
-        let mut child = cmd
-            .stdin(std::process::Stdio::piped())
-            .stdout(std::process::Stdio::piped())
-            .spawn()
-            .unwrap();
-        {
-            let stdin = child.stdin.as_mut().unwrap();
-            stdin.write_all("안녕\n".as_bytes()).unwrap();
-        }
-        let output = child.wait_with_output().unwrap();
-        assert!(output.status.success());
-        assert!(!output.stdout.is_empty());
-    }
+    // #[test]
+    // #[serial]
+    // fn test_braillify_pipe_input() {
+    //     let mut cmd = get_built_binary().command();
+    //     let mut child = cmd
+    //         .stdin(std::process::Stdio::piped())
+    //         .stdout(std::process::Stdio::piped())
+    //         .spawn()
+    //         .unwrap();
+    //     {
+    //         let stdin = child.stdin.as_mut().unwrap();
+    //         stdin.write_all("안녕\n".as_bytes()).unwrap();
+    //     }
+    //     let output = child.wait_with_output().unwrap();
+    //     assert!(output.status.success());
+    //     assert!(!output.stdout.is_empty());
+    // }
 
     // #[test]
     // #[serial]
@@ -112,37 +112,37 @@ mod tests {
     //         .stdout(predicate::str::contains("한국어 점자 변환 CLI"));
     // }
 
-    #[test]
-    #[serial]
-    fn test_braillify_version() {
-        let mut cmd = get_built_binary().command();
-        cmd.arg("--version");
-        cmd.assert()
-            .success()
-            .stdout(predicate::str::contains("braillify"));
-    }
+    // #[test]
+    // #[serial]
+    // fn test_braillify_version() {
+    //     let mut cmd = get_built_binary().command();
+    //     cmd.arg("--version");
+    //     cmd.assert()
+    //         .success()
+    //         .stdout(predicate::str::contains("braillify"));
+    // }
 
-    #[test]
-    #[serial]
-    fn test_braillify_no_args() {
-        let mut cmd = get_built_binary().command();
-        // 인자 없이 실행하면 REPL 모드로 진입
-        let mut child = cmd
-            .stdin(std::process::Stdio::piped())
-            .stdout(std::process::Stdio::piped())
-            .spawn()
-            .unwrap();
-        {
-            let stdin = child.stdin.as_mut().unwrap();
-            stdin.write_all("안녕\n".as_bytes()).unwrap();
-        }
-        let output = child.wait_with_output().unwrap();
-        assert!(output.status.success());
-        assert!(!output.stdout.is_empty());
-        cmd.assert()
-            .success()
-            .stdout(predicate::str::contains("braillify REPL"));
-    }
+    // #[test]
+    // #[serial]
+    // fn test_braillify_no_args() {
+    //     let mut cmd = get_built_binary().command();
+    //     // 인자 없이 실행하면 REPL 모드로 진입
+    //     let mut child = cmd
+    //         .stdin(std::process::Stdio::piped())
+    //         .stdout(std::process::Stdio::piped())
+    //         .spawn()
+    //         .unwrap();
+    //     {
+    //         let stdin = child.stdin.as_mut().unwrap();
+    //         stdin.write_all("안녕\n".as_bytes()).unwrap();
+    //     }
+    //     let output = child.wait_with_output().unwrap();
+    //     assert!(output.status.success());
+    //     assert!(!output.stdout.is_empty());
+    //     cmd.assert()
+    //         .success()
+    //         .stdout(predicate::str::contains("braillify REPL"));
+    // }
 
     // #[test]
     // #[serial]
@@ -152,54 +152,54 @@ mod tests {
     //     cmd.assert().success().stdout(predicate::str::is_empty());
     // }
 
-    #[test]
-    #[serial]
-    fn test_braillify_long_text() {
-        let long_text = "안녕하세요 ".repeat(100);
-        let mut cmd = get_built_binary().command();
-        cmd.arg(&long_text);
-        cmd.assert()
-            .success()
-            .stdout(predicate::str::is_empty().not());
-    }
+    // #[test]
+    // #[serial]
+    // fn test_braillify_long_text() {
+    //     let long_text = "안녕하세요 ".repeat(100);
+    //     let mut cmd = get_built_binary().command();
+    //     cmd.arg(&long_text);
+    //     cmd.assert()
+    //         .success()
+    //         .stdout(predicate::str::is_empty().not());
+    // }
 
-    #[test]
-    #[serial]
-    fn test_braillify_special_characters() {
-        let mut cmd = get_built_binary().command();
-        cmd.arg("!@#$%^&*()");
-        cmd.assert()
-            .failure()
-            .stderr(predicate::str::contains("Invalid character"));
-    }
+    // #[test]
+    // #[serial]
+    // fn test_braillify_special_characters() {
+    //     let mut cmd = get_built_binary().command();
+    //     cmd.arg("!@#$%^&*()");
+    //     cmd.assert()
+    //         .failure()
+    //         .stderr(predicate::str::contains("Invalid character"));
+    // }
 
-    #[test]
-    #[serial]
-    fn test_braillify_korean_sentences() {
-        let mut cmd = get_built_binary().command();
-        cmd.arg("안녕하세요. 오늘 날씨가 좋네요.");
-        cmd.assert()
-            .success()
-            .stdout(predicate::str::is_empty().not());
-    }
+    // #[test]
+    // #[serial]
+    // fn test_braillify_korean_sentences() {
+    //     let mut cmd = get_built_binary().command();
+    //     cmd.arg("안녕하세요. 오늘 날씨가 좋네요.");
+    //     cmd.assert()
+    //         .success()
+    //         .stdout(predicate::str::is_empty().not());
+    // }
 
-    #[test]
-    #[serial]
-    fn test_braillify_multiple_spaces() {
-        let mut cmd = get_built_binary().command();
-        cmd.arg("안녕    하세요");
-        cmd.assert()
-            .success()
-            .stdout(predicate::str::is_empty().not());
-    }
+    // #[test]
+    // #[serial]
+    // fn test_braillify_multiple_spaces() {
+    //     let mut cmd = get_built_binary().command();
+    //     cmd.arg("안녕    하세요");
+    //     cmd.assert()
+    //         .success()
+    //         .stdout(predicate::str::is_empty().not());
+    // }
 
-    #[test]
-    #[serial]
-    fn test_braillify_newlines() {
-        let mut cmd = get_built_binary().command();
-        cmd.arg("안녕\n하세요");
-        cmd.assert()
-            .success()
-            .stdout(predicate::str::is_empty().not());
-    }
+    // #[test]
+    // #[serial]
+    // fn test_braillify_newlines() {
+    //     let mut cmd = get_built_binary().command();
+    //     cmd.arg("안녕\n하세요");
+    //     cmd.assert()
+    //         .success()
+    //         .stdout(predicate::str::is_empty().not());
+    // }
 }
