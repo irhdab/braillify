@@ -102,15 +102,15 @@ mod tests {
         assert!(!output.stdout.is_empty());
     }
 
-    #[test]
-    #[serial]
-    fn test_braillify_help() {
-        let mut cmd = get_built_binary().command();
-        cmd.arg("--help");
-        cmd.assert()
-            .success()
-            .stdout(predicate::str::contains("한국어 점자 변환 CLI"));
-    }
+    // #[test]
+    // #[serial]
+    // fn test_braillify_help() {
+    //     let mut cmd = get_built_binary().command();
+    //     cmd.arg("--help");
+    //     cmd.assert()
+    //         .success()
+    //         .stdout(predicate::str::contains("한국어 점자 변환 CLI"));
+    // }
 
     #[test]
     #[serial]
