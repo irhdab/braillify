@@ -17,9 +17,11 @@ mod tests {
 
     use assert_cmd::assert::OutputAssertExt;
     use predicates::prelude::*;
+    use serial_test::serial;
 
     // assert_cmd를 사용한 통합 테스트들
     #[test]
+    #[serial]
     fn test_braillify_integration_single_word() {
         let built = escargot::CargoBuild::new()
             .bin("braillify")
@@ -44,6 +46,7 @@ mod tests {
     }
 
     #[test]
+    #[serial]
     fn test_braillify_integration_english() {
         let built = escargot::CargoBuild::new()
             .bin("braillify")
@@ -59,6 +62,7 @@ mod tests {
     }
 
     #[test]
+    #[serial]
     fn test_braillify_integration_mixed() {
         let built = escargot::CargoBuild::new()
             .bin("braillify")
@@ -74,6 +78,7 @@ mod tests {
     }
 
     #[test]
+    #[serial]
     fn test_braillify_integration_numbers() {
         let built = escargot::CargoBuild::new()
             .bin("braillify")
@@ -89,6 +94,7 @@ mod tests {
     }
 
     #[test]
+    #[serial]
     fn test_braillify_pipe_input() {
         let built = escargot::CargoBuild::new()
             .bin("braillify")
@@ -112,6 +118,7 @@ mod tests {
     }
 
     #[test]
+    #[serial]
     fn test_braillify_help() {
         let built = escargot::CargoBuild::new()
             .bin("braillify")
@@ -127,6 +134,7 @@ mod tests {
     }
 
     #[test]
+    #[serial]
     fn test_braillify_version() {
         let built = escargot::CargoBuild::new()
             .bin("braillify")
@@ -142,6 +150,7 @@ mod tests {
     }
 
     #[test]
+    #[serial]
     fn test_braillify_no_args() {
         let built = escargot::CargoBuild::new()
             .bin("braillify")
@@ -169,6 +178,7 @@ mod tests {
     }
 
     #[test]
+    #[serial]
     fn test_braillify_empty_input() {
         let built = escargot::CargoBuild::new()
             .bin("braillify")
@@ -182,6 +192,7 @@ mod tests {
     }
 
     #[test]
+    #[serial]
     fn test_braillify_long_text() {
         let long_text = "안녕하세요 ".repeat(100);
         let built = escargot::CargoBuild::new()
@@ -198,6 +209,7 @@ mod tests {
     }
 
     #[test]
+    #[serial]
     fn test_braillify_special_characters() {
         let built = escargot::CargoBuild::new()
             .bin("braillify")
@@ -213,6 +225,7 @@ mod tests {
     }
 
     #[test]
+    #[serial]
     fn test_braillify_korean_sentences() {
         let built = escargot::CargoBuild::new()
             .bin("braillify")
@@ -228,6 +241,7 @@ mod tests {
     }
 
     #[test]
+    #[serial]
     fn test_braillify_multiple_spaces() {
         let built = escargot::CargoBuild::new()
             .bin("braillify")
@@ -243,6 +257,7 @@ mod tests {
     }
 
     #[test]
+    #[serial]
     fn test_braillify_newlines() {
         let built = escargot::CargoBuild::new()
             .bin("braillify")
