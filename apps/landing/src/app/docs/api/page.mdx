@@ -2,108 +2,174 @@ export const metadata = {
   title: 'API',
   alternates: {
     canonical: '/docs/api',
-  }
+  },
 }
 
 # API
-<br/>
+
+<br />
 
 Braillify 는 Node.js(Wasm for Web) 와 Python 그리고 Rust를 지원합니다.
 
 모든 함수는 표현 방식만 다를 뿐 사용법과 함수명은 같습니다.
 
-
-<table style={{
-  width: '100%',
-  borderCollapse: 'collapse',
-  margin: '20px 0'
-}}>
+<table
+  style={{
+    width: '100%',
+    borderCollapse: 'collapse',
+    margin: '20px 0',
+  }}
+>
   <thead>
     <tr>
-      <th style={{
-        padding: '12px',
-        textAlign: 'left',
-        borderBottom: '2px solid #ddd',
-        backgroundColor: 'var(--containerBackground)',
-        color: 'var(--text)'
-      }}>Node.js 함수</th>
-      <th style={{
-        padding: '12px',
-        textAlign: 'left',
-        borderBottom: '2px solid #ddd',
-        backgroundColor: 'var(--containerBackground)',
-        color: 'var(--text)'
-      }}>Python 함수</th>
-      <th style={{
-        padding: '12px',
-        textAlign: 'left',
-        borderBottom: '2px solid #ddd',
-        backgroundColor: 'var(--containerBackground)',
-        color: 'var(--text)'
-      }}>Rust 함수</th>
-      <th style={{
-        padding: '12px',
-        textAlign: 'left',
-        borderBottom: '2px solid #ddd',
-        backgroundColor: 'var(--containerBackground)',
-        color: 'var(--text)'
-      }}>설명</th>
+      <th
+        style={{
+          padding: '12px',
+          textAlign: 'left',
+          borderBottom: '2px solid #ddd',
+          backgroundColor: 'var(--containerBackground)',
+          color: 'var(--text)',
+        }}
+      >
+        Node.js 함수
+      </th>
+      <th
+        style={{
+          padding: '12px',
+          textAlign: 'left',
+          borderBottom: '2px solid #ddd',
+          backgroundColor: 'var(--containerBackground)',
+          color: 'var(--text)',
+        }}
+      >
+        Python 함수
+      </th>
+      <th
+        style={{
+          padding: '12px',
+          textAlign: 'left',
+          borderBottom: '2px solid #ddd',
+          backgroundColor: 'var(--containerBackground)',
+          color: 'var(--text)',
+        }}
+      >
+        Rust 함수
+      </th>
+      <th
+        style={{
+          padding: '12px',
+          textAlign: 'left',
+          borderBottom: '2px solid #ddd',
+          backgroundColor: 'var(--containerBackground)',
+          color: 'var(--text)',
+        }}
+      >
+        설명
+      </th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td style={{
-        padding: '12px',
-        borderBottom: '1px solid #ddd'
-      }}>encode</td>
-      <td style={{
-        padding: '12px',
-        borderBottom: '1px solid #ddd'
-      }}>encode</td>
-      <td style={{
-        padding: '12px',
-        borderBottom: '1px solid #ddd'
-      }}>encode</td>
-      <td style={{
-        padding: '12px',
-        borderBottom: '1px solid #ddd'
-      }}>문자열을 바이너리로 변환합니다.</td>
+      <td
+        style={{
+          padding: '12px',
+          borderBottom: '1px solid #ddd',
+        }}
+      >
+        encode
+      </td>
+      <td
+        style={{
+          padding: '12px',
+          borderBottom: '1px solid #ddd',
+        }}
+      >
+        encode
+      </td>
+      <td
+        style={{
+          padding: '12px',
+          borderBottom: '1px solid #ddd',
+        }}
+      >
+        encode
+      </td>
+      <td
+        style={{
+          padding: '12px',
+          borderBottom: '1px solid #ddd',
+        }}
+      >
+        문자열을 바이너리로 변환합니다.
+      </td>
     </tr>
     <tr>
-      <td style={{
-        padding: '12px',
-        borderBottom: '1px solid #ddd'
-      }}>translateToUnicode</td>
-      <td style={{
-        padding: '12px',
-        borderBottom: '1px solid #ddd'
-      }}>translate_to_unicode</td>
-      <td style={{
-        padding: '12px',
-        borderBottom: '1px solid #ddd'
-      }}>encode_to_unicode</td>
-      <td style={{
-        padding: '12px',
-        borderBottom: '1px solid #ddd'
-      }}>문자열을 유니코드 점자로 변환합니다.</td>
+      <td
+        style={{
+          padding: '12px',
+          borderBottom: '1px solid #ddd',
+        }}
+      >
+        translateToUnicode
+      </td>
+      <td
+        style={{
+          padding: '12px',
+          borderBottom: '1px solid #ddd',
+        }}
+      >
+        translate_to_unicode
+      </td>
+      <td
+        style={{
+          padding: '12px',
+          borderBottom: '1px solid #ddd',
+        }}
+      >
+        encode_to_unicode
+      </td>
+      <td
+        style={{
+          padding: '12px',
+          borderBottom: '1px solid #ddd',
+        }}
+      >
+        문자열을 유니코드 점자로 변환합니다.
+      </td>
     </tr>
     <tr>
-      <td style={{
-        padding: '12px',
-        borderBottom: '1px solid #ddd'
-      }}>translateToBrailleFont</td>
-      <td style={{
-        padding: '12px',
-        borderBottom: '1px solid #ddd'
-      }}>translate_to_braille_font</td>
-      <td style={{
-        padding: '12px',
-        borderBottom: '1px solid #ddd'
-      }}>encode_to_braille_font</td>
-      <td style={{
-        padding: '12px',
-        borderBottom: '1px solid #ddd'
-      }}>문자열을 점자 폰트로 변환합니다.</td>
+      <td
+        style={{
+          padding: '12px',
+          borderBottom: '1px solid #ddd',
+        }}
+      >
+        translateToBrailleFont
+      </td>
+      <td
+        style={{
+          padding: '12px',
+          borderBottom: '1px solid #ddd',
+        }}
+      >
+        translate_to_braille_font
+      </td>
+      <td
+        style={{
+          padding: '12px',
+          borderBottom: '1px solid #ddd',
+        }}
+      >
+        encode_to_braille_font
+      </td>
+      <td
+        style={{
+          padding: '12px',
+          borderBottom: '1px solid #ddd',
+        }}
+      >
+        문자열을 점자 폰트로 변환합니다.
+      </td>
     </tr>
   </tbody>
 </table>

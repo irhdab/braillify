@@ -2,7 +2,7 @@
 import { Box, css, Flex, Text, VStack } from '@devup-ui/react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { useEffect, useState } from 'react'
+import { useMemo } from 'react'
 
 function IndexMenu({
   children,
@@ -41,14 +41,12 @@ function IndexMenu({
 export function RightIndex() {
   const pathname = usePathname()
   const editUrl = `https://github.com/dev-five-git/braillify/tree/main/apps/landing/src/app/docs${pathname.split('docs')[1]}/page.mdx`
-  const [menus, setMenus] = useState<
-    {
-      text: string
-      sub?: boolean
-      onClick?: () => void
-    }[]
-  >([])
-  useEffect(() => {
+  return <RightIndexInner key={pathname} editUrl={editUrl} />
+}
+
+function RightIndexInner({ editUrl }: { editUrl: string }) {
+  const menus = useMemo(() => {
+    if (typeof document === 'undefined') return []
     const elements = document.querySelectorAll(
       '.markdown-body h1, .markdown-body h2',
     )
@@ -64,8 +62,8 @@ export function RightIndex() {
         },
       })
     }
-    setMenus(menus)
-  }, [pathname])
+    return menus
+  }, [])
 
   return (
     <VStack gap="16px" p="20px 16px" w="200px">

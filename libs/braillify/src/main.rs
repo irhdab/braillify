@@ -14,22 +14,31 @@ fn main() -> Result<()> {
 #[cfg(all(test, feature = "cli"))]
 mod tests {
     use std::io::Write;
+    use std::sync::OnceLock;
 
     use assert_cmd::assert::OutputAssertExt;
     use predicates::prelude::*;
     use serial_test::serial;
 
+    // 빌드를 한 번만 수행하고 재사용
+    static BUILT_BINARY: OnceLock<escargot::CargoRun> = OnceLock::new();
+
+    fn get_built_binary() -> &'static escargot::CargoRun {
+        BUILT_BINARY.get_or_init(|| {
+            escargot::CargoBuild::new()
+                .bin("braillify")
+                .current_release()
+                .current_target()
+                .run()
+                .expect("Failed to build braillify binary for testing")
+        })
+    }
+
     // assert_cmd를 사용한 통합 테스트들
     #[test]
     #[serial]
     fn test_braillify_integration_single_word() {
-        let built = escargot::CargoBuild::new()
-            .bin("braillify")
-            .current_release()
-            .current_target()
-            .run()
-            .unwrap();
-        let mut cmd = built.command();
+        let mut cmd = get_built_binary().command();
         cmd.arg("안녕");
         let assert = cmd
             .assert()
@@ -48,13 +57,7 @@ mod tests {
     #[test]
     #[serial]
     fn test_braillify_integration_english() {
-        let built = escargot::CargoBuild::new()
-            .bin("braillify")
-            .current_release()
-            .current_target()
-            .run()
-            .unwrap();
-        let mut cmd = built.command();
+        let mut cmd = get_built_binary().command();
         cmd.arg("hello");
         cmd.assert()
             .success()
@@ -64,13 +67,7 @@ mod tests {
     #[test]
     #[serial]
     fn test_braillify_integration_mixed() {
-        let built = escargot::CargoBuild::new()
-            .bin("braillify")
-            .current_release()
-            .current_target()
-            .run()
-            .unwrap();
-        let mut cmd = built.command();
+        let mut cmd = get_built_binary().command();
         cmd.arg("안녕 hello");
         cmd.assert()
             .success()
@@ -80,13 +77,7 @@ mod tests {
     #[test]
     #[serial]
     fn test_braillify_integration_numbers() {
-        let built = escargot::CargoBuild::new()
-            .bin("braillify")
-            .current_release()
-            .current_target()
-            .run()
-            .unwrap();
-        let mut cmd = built.command();
+        let mut cmd = get_built_binary().command();
         cmd.arg("123");
         cmd.assert()
             .success()
@@ -96,13 +87,7 @@ mod tests {
     #[test]
     #[serial]
     fn test_braillify_pipe_input() {
-        let built = escargot::CargoBuild::new()
-            .bin("braillify")
-            .current_release()
-            .current_target()
-            .run()
-            .unwrap();
-        let mut cmd = built.command();
+        let mut cmd = get_built_binary().command();
         let mut child = cmd
             .stdin(std::process::Stdio::piped())
             .stdout(std::process::Stdio::piped())
@@ -120,13 +105,7 @@ mod tests {
     #[test]
     #[serial]
     fn test_braillify_help() {
-        let built = escargot::CargoBuild::new()
-            .bin("braillify")
-            .current_release()
-            .current_target()
-            .run()
-            .unwrap();
-        let mut cmd = built.command();
+        let mut cmd = get_built_binary().command();
         cmd.arg("--help");
         cmd.assert()
             .success()
@@ -136,13 +115,7 @@ mod tests {
     #[test]
     #[serial]
     fn test_braillify_version() {
-        let built = escargot::CargoBuild::new()
-            .bin("braillify")
-            .current_release()
-            .current_target()
-            .run()
-            .unwrap();
-        let mut cmd = built.command();
+        let mut cmd = get_built_binary().command();
         cmd.arg("--version");
         cmd.assert()
             .success()
@@ -152,13 +125,7 @@ mod tests {
     #[test]
     #[serial]
     fn test_braillify_no_args() {
-        let built = escargot::CargoBuild::new()
-            .bin("braillify")
-            .current_release()
-            .current_target()
-            .run()
-            .unwrap();
-        let mut cmd = built.command();
+        let mut cmd = get_built_binary().command();
         // 인자 없이 실행하면 REPL 모드로 진입
         let mut child = cmd
             .stdin(std::process::Stdio::piped())
@@ -180,13 +147,7 @@ mod tests {
     #[test]
     #[serial]
     fn test_braillify_empty_input() {
-        let built = escargot::CargoBuild::new()
-            .bin("braillify")
-            .current_release()
-            .current_target()
-            .run()
-            .unwrap();
-        let mut cmd = built.command();
+        let mut cmd = get_built_binary().command();
         cmd.arg("");
         cmd.assert().success().stdout(predicate::str::is_empty());
     }
@@ -195,13 +156,7 @@ mod tests {
     #[serial]
     fn test_braillify_long_text() {
         let long_text = "안녕하세요 ".repeat(100);
-        let built = escargot::CargoBuild::new()
-            .bin("braillify")
-            .current_release()
-            .current_target()
-            .run()
-            .unwrap();
-        let mut cmd = built.command();
+        let mut cmd = get_built_binary().command();
         cmd.arg(&long_text);
         cmd.assert()
             .success()
@@ -211,13 +166,7 @@ mod tests {
     #[test]
     #[serial]
     fn test_braillify_special_characters() {
-        let built = escargot::CargoBuild::new()
-            .bin("braillify")
-            .current_release()
-            .current_target()
-            .run()
-            .unwrap();
-        let mut cmd = built.command();
+        let mut cmd = get_built_binary().command();
         cmd.arg("!@#$%^&*()");
         cmd.assert()
             .failure()
@@ -227,13 +176,7 @@ mod tests {
     #[test]
     #[serial]
     fn test_braillify_korean_sentences() {
-        let built = escargot::CargoBuild::new()
-            .bin("braillify")
-            .current_release()
-            .current_target()
-            .run()
-            .unwrap();
-        let mut cmd = built.command();
+        let mut cmd = get_built_binary().command();
         cmd.arg("안녕하세요. 오늘 날씨가 좋네요.");
         cmd.assert()
             .success()
@@ -243,13 +186,7 @@ mod tests {
     #[test]
     #[serial]
     fn test_braillify_multiple_spaces() {
-        let built = escargot::CargoBuild::new()
-            .bin("braillify")
-            .current_release()
-            .current_target()
-            .run()
-            .unwrap();
-        let mut cmd = built.command();
+        let mut cmd = get_built_binary().command();
         cmd.arg("안녕    하세요");
         cmd.assert()
             .success()
@@ -259,13 +196,7 @@ mod tests {
     #[test]
     #[serial]
     fn test_braillify_newlines() {
-        let built = escargot::CargoBuild::new()
-            .bin("braillify")
-            .current_release()
-            .current_target()
-            .run()
-            .unwrap();
-        let mut cmd = built.command();
+        let mut cmd = get_built_binary().command();
         cmd.arg("안녕\n하세요");
         cmd.assert()
             .success()

@@ -7,11 +7,8 @@ import { useEffect } from 'react'
 export default function Tooltip({ children }: { children: React.ReactNode }) {
   const [viewportWidth, setViewportWidth] = useState(0)
   const ref = useRef<HTMLDivElement>(null)
+  if (typeof window !== 'undefined') setViewportWidth(window.innerWidth)
   useEffect(() => {
-    if (typeof window === 'undefined') return
-
-    setViewportWidth(window.innerWidth)
-
     const handleResize = () => {
       setViewportWidth(window.innerWidth)
     }
