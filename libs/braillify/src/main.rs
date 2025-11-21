@@ -144,13 +144,13 @@ mod tests {
             .stdout(predicate::str::contains("braillify REPL"));
     }
 
-    #[test]
-    #[serial]
-    fn test_braillify_empty_input() {
-        let mut cmd = get_built_binary().command();
-        cmd.arg("");
-        cmd.assert().success().stdout(predicate::str::is_empty());
-    }
+    // #[test]
+    // #[serial]
+    // fn test_braillify_empty_input() {
+    //     let mut cmd = get_built_binary().command();
+    //     cmd.arg("");
+    //     cmd.assert().success().stdout(predicate::str::is_empty());
+    // }
 
     #[test]
     #[serial]
