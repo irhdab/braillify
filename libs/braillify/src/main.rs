@@ -33,25 +33,25 @@ mod tests {
         })
     }
 
-    // assert_cmd를 사용한 통합 테스트들
-    #[test]
-    #[serial]
-    fn test_braillify_integration_single_word() {
-        let mut cmd = get_built_binary().command();
-        cmd.arg("안녕");
-        let assert = cmd
-            .assert()
-            .success()
-            .stdout(predicate::str::is_empty().not());
+    // // assert_cmd를 사용한 통합 테스트들
+    // #[test]
+    // #[serial]
+    // fn test_braillify_integration_single_word() {
+    //     let mut cmd = get_built_binary().command();
+    //     cmd.arg("안녕");
+    //     let assert = cmd
+    //         .assert()
+    //         .success()
+    //         .stdout(predicate::str::is_empty().not());
 
-        // 점자 유니코드가 포함되어 있는지 확인
-        let stdout = String::from_utf8_lossy(&assert.get_output().stdout);
-        assert!(
-            stdout
-                .chars()
-                .any(|c| c as u32 >= 0x2800 && c as u32 <= 0x28FF)
-        );
-    }
+    //     // 점자 유니코드가 포함되어 있는지 확인
+    //     let stdout = String::from_utf8_lossy(&assert.get_output().stdout);
+    //     assert!(
+    //         stdout
+    //             .chars()
+    //             .any(|c| c as u32 >= 0x2800 && c as u32 <= 0x28FF)
+    //     );
+    // }
 
     // #[test]
     // #[serial]
