@@ -2,7 +2,7 @@ export const metadata = {
   title: '기여하기',
   alternates: {
     canonical: '/docs/contributing',
-  }
+  },
 }
 
 # 기여하기
@@ -15,7 +15,7 @@ Braillify는 모든 오픈소스 기여를 환영합니다.
 
 - **Rust**
 - **Python** 3.9 이상
-- **Node.js(22이상)** 
+- **Node.js(22이상)**
 - **pnpm** (Node.js 패키지 매니저)
 - **uv** (Python 패키지 매니저)
 - **Git**
@@ -29,6 +29,7 @@ Braillify는 모든 오픈소스 기여를 환영합니다.
 3. 이어지는 화면에서 필요하다면 설정값을 조정한 후 'Create fork 버튼'을 클릭하세요.
 4. 더 자세한 방법은 [깃허브의 리포지토리 포크 문서](https://docs.github.com/ko/pull-requests/collaborating-with-pull-requests/working-with-forks/fork-a-repo)를 참고하세요.
 5. 포크한 자신의 저장소를 로컬로 클론합니다.
+
 ```bash
 git clone git@github.com:<your-username>/braillify.git
 cd braillify
@@ -48,6 +49,7 @@ pnpm install
 ```
 
 **설치 과정에서 자동으로 실행되는 작업:**
+
 - `uv sync` (Python 의존성 설치)
 - `cargo install wasm-pack` (WebAssembly 빌드 도구)
 - `pip install maturin` (Python 바인딩 빌드 도구)
@@ -60,28 +62,32 @@ pnpm test
 pnpm lint
 ```
 
-<br/>
+<br />
 
 ## 테스트 케이스 추가
 
 개발 환경 설정이 완료되면 `braillobe-case-collector` 도구를 사용하여 직접 테스트 케이스를 추가할 수 있습니다.
 
 **1. 터미널 실행**
+
 - **Windows**: PowerShell(권장) 또는 명령 프롬프트(cmd) 사용
 - **macOS/Linux**: 기본 terminal 사용
 
 **2. braillove-case-collector 폴더로 이동**
+
 ```bash
 cd ./braillove-case-collector
 ```
 
 **3. Converter 실행**
+
 ```bash
 uv run python ./converter.py
 ```
 
 **4. 2024 개정 한국 점자 규정 문서로부터 원하는 단어 드래그 후 복사**
 PDF에서 원하는 단어의 점자를 복사합니다.
+
 ```csv
 ⠎⠕⠜
 ```
@@ -89,17 +95,18 @@ PDF에서 원하는 단어의 점자를 복사합니다.
 **5. 붙여넣기 후 엔터, 실행하여 나온 결과의 숫자와 점자를 복사**
 터미널에 복사한 점자를 붙여넣고 엔터를 눌러 변환을 실행한 후, 출력된 숫자 코드와 점자를 복사합니다.
 
-**6. rule_항번호.csv에 해당 내용 입력**
+**6. rule\_항번호.csv에 해당 내용 입력**
 적절한 `rule_N.csv` 파일을 열고 다음 형식으로 추가하세요:
 
 `한글단어,^<mr,숫자코드,점자`
+
 ```csv
 바위,^<mr,24351323,⠎⠕⠜
 ```
 
 **제안:** [github issue](https://github.com/dev-five-git/braillify/issues)에서 테스트 케이스 추가를 건의해 주세요.
 
-<br/>
+<br />
 
 ## 기여 방법
 
@@ -128,7 +135,7 @@ cargo test
 # Python 테스트
 cd packages/python && pytest && cd ../..
 
-# Node.js 테스트  
+# Node.js 테스트
 cd packages/node && npm test && cd ../..
 ```
 

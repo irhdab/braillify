@@ -23,8 +23,8 @@
 <a href="https://discord.gg/8zjcGc7cWh">
 <img alt="Discord" src="https://img.shields.io/discord/1321362173619994644.svg?label=&logo=discord&logoColor=ffffff&color=7389D8&labelColor=6A7EC2" />
 </a>
-<a href="https://codecov.io/gh/dev-five-git/braillify" > 
- <img src="https://codecov.io/gh/dev-five-git/braillify/graph/badge.svg?token=8I5GMB2X5B"/> 
+<a href="https://codecov.io/gh/dev-five-git/braillify" >
+ <img src="https://codecov.io/gh/dev-five-git/braillify/graph/badge.svg?token=8I5GMB2X5B"/>
 </a>
 <a href="https://pypi.org/project/braillify" target="_blank">
     <img src="https://img.shields.io/pypi/v/braillify?color=%2334D058&label=pypi%20package" alt="Package version">

@@ -15,10 +15,9 @@ Rust 기반 크로스플랫폼 한국어 점역 라이브러리
 <a href="https://discord.gg/8zjcGc7cWh">
 <img alt="Discord" src="https://img.shields.io/discord/1321362173619994644.svg?label=&logo=discord&logoColor=ffffff&color=7389D8&labelColor=6A7EC2" />
 </a>
-<a href="https://codecov.io/gh/dev-five-git/braillify" > 
- <img src="https://codecov.io/gh/dev-five-git/braillify/graph/badge.svg?token=8I5GMB2X5B"/> 
+<a href="https://codecov.io/gh/dev-five-git/braillify" >
+ <img src="https://codecov.io/gh/dev-five-git/braillify/graph/badge.svg?token=8I5GMB2X5B"/>
 </a>
-
 
 ## 설치
 

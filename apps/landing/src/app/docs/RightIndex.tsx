@@ -41,31 +41,40 @@ function IndexMenu({
 export function RightIndex() {
   const pathname = usePathname()
   const editUrl = `https://github.com/dev-five-git/braillify/tree/main/apps/landing/src/app/docs${pathname.split('docs')[1]}/page.mdx`
-  const [menus, setMenus] = useState<
-    {
-      text: string
-      sub?: boolean
-      onClick?: () => void
-    }[]
-  >([])
+  return <RightIndexInner key={pathname} editUrl={editUrl} />
+}
+
+type MenuItem = {
+  text: string
+  sub: boolean
+  onClick: () => void
+}
+
+function RightIndexInner({ editUrl }: { editUrl: string }) {
+  const [menus, setMenus] = useState<MenuItem[]>([])
+
   useEffect(() => {
-    const elements = document.querySelectorAll(
-      '.markdown-body h1, .markdown-body h2',
-    )
-    const menus = []
-    for (let i = 0; i < elements.length; i++) {
-      const element = elements[i]
-      const text = element.textContent!
-      menus.push({
-        text,
-        sub: element.tagName === 'H2',
-        onClick: () => {
-          element.scrollIntoView({ behavior: 'smooth' })
-        },
-      })
+    const updateMenus = () => {
+      const elements = document.querySelectorAll(
+        '.markdown-body h1, .markdown-body h2',
+      )
+      const newMenus: MenuItem[] = []
+      for (let i = 0; i < elements.length; i++) {
+        const element = elements[i]
+        const text = element.textContent!
+        newMenus.push({
+          text,
+          sub: element.tagName === 'H2',
+          onClick: () => {
+            element.scrollIntoView({ behavior: 'smooth' })
+          },
+        })
+      }
+      setMenus(newMenus)
     }
-    setMenus(menus)
-  }, [pathname])
+
+    requestAnimationFrame(updateMenus)
+  }, [])
 
   return (
     <VStack gap="16px" p="20px 16px" w="200px">

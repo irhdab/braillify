@@ -18,7 +18,7 @@ export default function TestCaseCircle({
         bg={isSuccess ? '$success' : '$error'}
         borderRadius="100px"
         boxSize="16px"
-        cursor="pointer"
+        cursor="zoom-in"
       />
       <Tooltip>{children}</Tooltip>
     </Box>
