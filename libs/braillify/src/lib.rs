@@ -41,6 +41,21 @@ mod utils;
 mod word_shortcut;
 mod fraction;
 
+#[derive(Debug, Clone)]
+pub struct EncodingConfig {
+    pub english_indicator: bool,
+    pub max_input_length: usize,
+}
+
+impl Default for EncodingConfig {
+    fn default() -> Self {
+        Self {
+            english_indicator: true,
+            max_input_length: 0,
+        }
+    }
+}
+
 pub struct Encoder {
     is_english: bool,
     triple_big_english: bool,
@@ -639,24 +654,22 @@ pub fn encode(text: &str) -> Result<Vec<u8>, BraillifyError> {
 }
 
 pub fn encode_with_config(text: &str, config: EncodingConfig) -> Result<Vec<u8>, BraillifyError> {
-    // Apply the configuration's english_indicator setting based on the text content if needed
-    let mut final_config = config;
-    if final_config.english_indicator {
-        final_config.english_indicator = text
+    let mut final_english_indicator = config.english_indicator;
+    if final_english_indicator {
+        final_english_indicator = text
             .split(' ')
             .filter(|word| !word.is_empty())
             .any(|word| word.chars().any(utils::is_korean_char));
     }
-
-    // Check max input length if limit is set
-    if final_config.max_input_length > 0 && text.len() > final_config.max_input_length {
-        return Err(BraillifyError::InputTooLong {
-            length: text.len(),
-            max_length: final_config.max_input_length
+    
+    if config.max_input_length > 0 && text.len() > config.max_input_length {
+        return Err(BraillifyError::InputTooLong { 
+            length: text.len(), 
+            max_length: config.max_input_length 
         });
     }
-
-    let mut encoder = Encoder::new(final_config);
+    
+    let mut encoder = Encoder::new(final_english_indicator);
     let mut result = Vec::new();
     encoder.encode(text, &mut result)?;
     encoder.finish(&mut result)?;

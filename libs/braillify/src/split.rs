@@ -189,11 +189,11 @@ mod tests {
     fn test_split_wrong() {
         assert_eq!(
             split_korean_char('a'),
-            Err("Invalid Korean character".to_string())
+            Err(BraillifyError::InvalidKoreanCharacter { character: 'a', position: None })
         );
         assert_eq!(
             split_korean_char('1'),
-            Err("Invalid Korean character".to_string())
+            Err(BraillifyError::InvalidKoreanCharacter { character: '1', position: None })
         );
     }
 }

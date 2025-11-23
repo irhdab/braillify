@@ -1,6 +1,6 @@
 use std::fmt;
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, PartialEq)]
 pub enum BraillifyError {
     InvalidCharacter { character: char, position: Option<usize>, context: String },
     InvalidKoreanCharacter { character: char, position: Option<usize> },
@@ -108,3 +108,21 @@ impl fmt::Display for BraillifyError {
 }
 
 impl std::error::Error for BraillifyError {}
+
+impl From<String> for BraillifyError {
+    fn from(message: String) -> Self {
+        BraillifyError::Other {
+            message,
+            context: String::new(),
+        }
+    }
+}
+
+impl From<&str> for BraillifyError {
+    fn from(message: &str) -> Self {
+        BraillifyError::Other {
+            message: message.to_string(),
+            context: String::new(),
+        }
+    }
+}

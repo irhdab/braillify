@@ -24,12 +24,12 @@ fn encode_number_string(s: &str, part_name: &str) -> Result<Vec<u8>, BraillifyEr
                 position: Some(i)
             });
         }
-        result.extend(crate::number::encode_number(c)?);
+        result.push(crate::number::encode_number(c)?);
     }
     Ok(result)
 }
 
-pub fn encode_fraction(numerator: &str, denominator: &str) -> Result<Vec<u8>, String> {
+pub fn encode_fraction(numerator: &str, denominator: &str) -> Result<Vec<u8>, BraillifyError> {
     let mut result = vec![60];
     result.extend(encode_number_string(denominator, "fraction denominator")?);
     result.push(12);
@@ -38,7 +38,7 @@ pub fn encode_fraction(numerator: &str, denominator: &str) -> Result<Vec<u8>, St
     Ok(result)
 }
 
-pub fn encode_fraction_in_context(numerator: &str, denominator: &str) -> Result<Vec<u8>, String> {
+pub fn encode_fraction_in_context(numerator: &str, denominator: &str) -> Result<Vec<u8>, BraillifyError> {
     let mut result = vec![60];
     result.extend(encode_number_string(numerator, "fraction numerator")?);
     result.push(56);
@@ -48,7 +48,7 @@ pub fn encode_fraction_in_context(numerator: &str, denominator: &str) -> Result<
     Ok(result)
 }
 
-pub fn encode_mixed_fraction(whole: &str, numerator: &str, denominator: &str) -> Result<Vec<u8>, String> {
+pub fn encode_mixed_fraction(whole: &str, numerator: &str, denominator: &str) -> Result<Vec<u8>, BraillifyError> {
     let mut result = vec![60];
     result.extend(encode_number_string(whole, "whole number")?);
     result.extend(encode_fraction(numerator, denominator)?);
@@ -190,7 +190,7 @@ mod tests {
     fn test_encode_number_string_invalid_non_digit() {
         let result = encode_number_string("a", "test");
         assert!(result.is_err());
-        assert!(result.unwrap_err().contains("Invalid test part"));
+        assert!(result.unwrap_err().to_string().contains("Invalid test part"));
     }
 
     #[test]
@@ -221,14 +221,14 @@ mod tests {
     fn test_encode_fraction_invalid_numerator() {
         let result = encode_fraction("a", "4");
         assert!(result.is_err());
-        assert!(result.unwrap_err().contains("numerator"));
+        assert!(result.unwrap_err().to_string().contains("numerator"));
     }
 
     #[test]
     fn test_encode_fraction_invalid_denominator() {
         let result = encode_fraction("3", "b");
         assert!(result.is_err());
-        assert!(result.unwrap_err().contains("denominator"));
+        assert!(result.unwrap_err().to_string().contains("denominator"));
     }
 
     #[test]
@@ -241,14 +241,14 @@ mod tests {
     fn test_encode_fraction_in_context_invalid_numerator() {
         let result = encode_fraction_in_context("x", "3");
         assert!(result.is_err());
-        assert!(result.unwrap_err().contains("numerator"));
+        assert!(result.unwrap_err().to_string().contains("numerator"));
     }
 
     #[test]
     fn test_encode_fraction_in_context_invalid_denominator() {
         let result = encode_fraction_in_context("2", "y");
         assert!(result.is_err());
-        assert!(result.unwrap_err().contains("denominator"));
+        assert!(result.unwrap_err().to_string().contains("denominator"));
     }
 
     #[test]
@@ -261,21 +261,21 @@ mod tests {
     fn test_encode_mixed_fraction_invalid_whole() {
         let result = encode_mixed_fraction("a", "1", "6");
         assert!(result.is_err());
-        assert!(result.unwrap_err().contains("whole"));
+        assert!(result.unwrap_err().to_string().contains("whole"));
     }
 
     #[test]
     fn test_encode_mixed_fraction_invalid_numerator() {
         let result = encode_mixed_fraction("3", "b", "6");
         assert!(result.is_err());
-        assert!(result.unwrap_err().contains("numerator"));
+        assert!(result.unwrap_err().to_string().contains("numerator"));
     }
 
     #[test]
     fn test_encode_mixed_fraction_invalid_denominator() {
         let result = encode_mixed_fraction("3", "1", "c");
         assert!(result.is_err());
-        assert!(result.unwrap_err().contains("denominator"));
+        assert!(result.unwrap_err().to_string().contains("denominator"));
     }
 
     #[test]

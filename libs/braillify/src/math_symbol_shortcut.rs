@@ -71,8 +71,8 @@ mod test {
             &[decode_unicode('⠔'), decode_unicode('⠔')]
         );
         assert_eq!(
-            encode_char_math_symbol_shortcut('a').unwrap_err(),
-            "Invalid math symbol character"
+            encode_char_math_symbol_shortcut('a'),
+            Err(BraillifyError::InvalidMathSymbolCharacter { character: 'a', position: None })
         );
     }
 }
